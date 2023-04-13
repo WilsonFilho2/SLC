@@ -8,14 +8,14 @@
 </head>
 <body>
     {% block body %}
-    {% if message %}
-        <h1>{{ message }}</h1>
-    {% endif %}
+        {% if message %}
+            <h1>{{ message }}</h1>
+        {% endif %}
         <form action="{% url 'cadastro' %}" method="post">
             {% csrf_token %}
-            <input type="text" name="username" id="username" placeholder="Username">
-            <input type="password" name="password" id="password" placeholder="Password">
-            <input type="email" name="email" id="email" placeholder="Email">
+            <p><input type="text" name="username" id="username" placeholder="Username"></p>
+            <p><input type="password" name="password" id="password" placeholder="Password"></p>
+            <p><input type="email" name="email" id="email" placeholder="Email"></p>
             <input type="submit" value="Cadastrar-se" >
         </form>
     {% endblock %}
