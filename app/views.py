@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import request
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.models import User
+from . import models
 
 
 # Create your views here.
@@ -9,7 +10,11 @@ from django.contrib.auth.models import User
 def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'app/index.html')
+    
+    listas = models.Lista.objects.all()
+    return render(request, 'app/index.html',{
+        'listas': listas
+    })
 
 
 def login(request):
@@ -62,3 +67,24 @@ def cadastro(request):
         
 
     return render(request, 'app/cadastro.html')
+
+
+
+
+#####################################################################################################
+
+
+def cadastro_produtos(request, lista_id):
+    return render(request, 'app/lista.html', {
+        'lista': lista_id
+    })
+
+
+def cadastrar_lista(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        lista = models.Lista.objects.create(nome=nome)
+        lista.save()
+        return redirect('index')
+
+    return redirect('index')

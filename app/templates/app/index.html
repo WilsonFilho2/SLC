@@ -8,9 +8,36 @@
 </head>
 <body>
     {% block body %}
-        <p>Username: {{ request.user.username }}</p>
-        <p>Email: {{ request.user.email }}</p>
-        <a href="{% url 'logout' %}">Log Out</a>
+        <nav class="infologin">
+            <p>Username: {{ request.user.username }}</p>
+            <p>Email: {{ request.user.email }}</p>
+            <a href="{% url 'logout' %}">Log Out</a>
+        </nav>
+
+        <article>
+            <header class="cabecalho">
+                <h1>Sistema de Lista de Compras</h1>
+            </header>
+            <main class="principal">
+                <section class="listas-cadastradas">
+                    <h2>Listas Cadastradas</h2>
+                    <ul>
+                        {% for lista in listas %}
+                            <li><a href="{% url 'produto' lista.id %}">{{ lista }}</a></li>
+                        {% endfor %}
+                        <!-- Trabalhar aqui futuramente -->
+                    </ul>
+                </section>
+                <section class="cadastrar-lista">
+                    <h2>Cadastrar Lista</h2>
+                    <form action="{% url 'lista' %}" method="post">
+                        {% csrf_token %}
+                        <p><input type="text" name="nome" id="nome" placeholder="Nome da Lista"></p>
+                        <input type="submit" value="Criar Lista">
+                    </form>
+                </section>
+            </main>
+        </article>
     {% endblock %}
 </body>
 </html>
