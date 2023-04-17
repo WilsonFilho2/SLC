@@ -12,8 +12,10 @@ def index(request):
         return redirect('login')
     
     listas = models.Lista.objects.all()
+    produtos = models.Produtos.objects.all()
     return render(request, 'app/index.html',{
-        'listas': listas
+        'listas': listas,
+        'produtos': produtos
     })
 
 
@@ -74,10 +76,19 @@ def cadastro(request):
 #####################################################################################################
 
 
-def cadastro_produtos(request, lista_id):
-    return render(request, 'app/lista.html', {
-        'lista': lista_id
-    })
+def cadastrar_produtos(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        preco = float(request.POST.get('preco'))
+
+        produto = models.Produtos.objects.create(nome=nome, preco=preco)
+        produto.save()
+
+        return redirect('index')
+    
+    return redirect('index')
+
+    
 
 
 def cadastrar_lista(request):
@@ -88,3 +99,26 @@ def cadastrar_lista(request):
         return redirect('index')
 
     return redirect('index')
+
+
+def adicionar_produtos(request, lista_id):
+    if request.method == 'POST':
+        lista = models.Lista.objects.get(id=lista_id)
+        produto_id = int(request.POST.get('produtos'))
+        produto = models.Produtos.objects.get(id=produto_id)
+        produto.lista.add(lista)
+
+    lista = models.Lista.objects.get(id=lista_id)
+    nao_produto = models.Produtos.objects.exclude(lista=lista).all()
+    produtos = lista.produtos.all()
+    total = 0
+
+    for produto in produtos:
+        total += float(produto.preco)
+
+    return render(request, 'app/lista.html', {
+        'lista': lista,
+        'nao_produto': nao_produto,
+        'produtos': produtos,
+        'total': total,
+    })

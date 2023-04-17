@@ -16,4 +16,4 @@ class Produtos(models.Model):
     lista = models.ManyToManyField(Lista, blank=True, related_name="produtos")
 
     def __str__(self) -> str:
-        return f"{self.id}: {self.nome}"
+        return f"{self.id}: {self.nome} | R${self.preco: .2f}"

@@ -23,7 +23,7 @@
                     <h2>Listas Cadastradas</h2>
                     <ul>
                         {% for lista in listas %}
-                            <li><a href="{% url 'produto' lista.id %}">{{ lista }}</a></li>
+                            <li><a href="{% url 'addproduto' lista.id %}">{{ lista }}</a></li>
                         {% endfor %}
                         <!-- Trabalhar aqui futuramente -->
                     </ul>
@@ -34,6 +34,23 @@
                         {% csrf_token %}
                         <p><input type="text" name="nome" id="nome" placeholder="Nome da Lista"></p>
                         <input type="submit" value="Criar Lista">
+                    </form>
+                </section>
+                <section class="ver-produtos">
+                    <h2>Ver Produtos</h2>
+                    <ul>
+                        {% for produto in produtos %}
+                            <li>{{ produto }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                <section class="cadastrar-produtos">
+                    <h2>Cadastrar Produtos</h2>
+                    <form action="{% url 'produto' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto">
+                        <input type="text" name="preco" id="preco" placeholder="Preço do Produto">
+                        <input type="submit" value="Adicionar">
                     </form>
                 </section>
             </main>

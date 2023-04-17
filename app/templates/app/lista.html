@@ -8,7 +8,25 @@
 </head>
 <body>
     {% block body %}
-        <h1>Lista: {{ lista }}</h1>
+        <h1>Lista: {{ lista.nome }}</h1>
+        <h2>Produtos da Lista</h2>
+        <ul>
+            {% for produto in produtos %}
+                <li>{{ produto.nome }}  R${{ produto.preco }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total: R${{ total }}</p>
+        <h2>Adicionar Produtos na Lista</h2>
+        <form action="{% url 'addproduto' lista.id %}" method="post">
+            {% csrf_token %}
+            <select name="produtos" id="">
+                {% for produto in nao_produto %}
+                    <option value="{{ produto.id }}">{{ produto.nome }} R${{ produto.preco }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Adicionar">
+        </form>
+        <a href="{% url 'index' %}">Voltar</a>
     {% endblock %}
 </body>
 </html>
